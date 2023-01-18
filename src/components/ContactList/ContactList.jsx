@@ -1,11 +1,18 @@
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import css from '../ContactList/ContactList.module.css';
 
-export const ContactList = ({ contacts, onRemoveContact }) => {
+export const ContactList = ({ onRemoveContact }) => {
+  const contactsArr = useSelector(state => {
+    return state.contacts.contacts.filter(contact =>
+      contact.name.toLowerCase().includes(state.filter.toLowerCase())
+    );
+  });
+
   return (
     <>
       <ul>
-        {contacts.map(contact => (
+        {contactsArr.map(contact => (
           <li key={contact.id}>
             {`${contact.name} : ${contact.number}`}
             <button
@@ -24,6 +31,6 @@ export const ContactList = ({ contacts, onRemoveContact }) => {
 };
 
 ContactList.propTypes = {
-  contacts: PropTypes.array.isRequired,
+  // contacts: PropTypes.array.isRequired,
   onRemoveContact: PropTypes.func.isRequired,
 };

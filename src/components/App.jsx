@@ -2,22 +2,30 @@ import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
 import { nanoid } from 'nanoid';
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
+import { useDispatch, useSelector} from 'react-redux';
+import { addContactAction, deleteContactAction } from 'redux/contactsSlice';
+import { filterChange } from 'redux/filterSlice';
 
 export const App = () => {
-  const [contacts, setContacts] = useState(() => {
-    return JSON.parse(localStorage.getItem('contacts')) ?? [];
-  });
-  const [filter, setFilter] = useState('');
 
-  useEffect(() => {
-    window.localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
+  const contactsObj = useSelector(state => state.contacts.contacts)
+  const dispatch = useDispatch();
+
+  // const [contacts, setContacts] = useState(() => {
+  //   return JSON.parse(localStorage.getItem('contacts')) ?? [];
+  // });
+  // const [filter, setFilter] = useState('');
+
+  // useEffect(() => {
+  //   window.localStorage.setItem('contacts', JSON.stringify(contacts));
+  // }, [contacts]);
 
   const addContact = number => {
-    const searchRepeat = contacts
-      .map(user => user.name.toLowerCase())
-      .includes(number.name.toLowerCase());
+    // console.log(number);
+    const searchRepeat = contactsObj.some(
+      user => user.name.toLowerCase() === number.name.toLowerCase()
+    );
 
     if (searchRepeat) {
       alert(`${number.name} is already in contacts`);
@@ -26,26 +34,28 @@ export const App = () => {
         ...number,
         id: nanoid(),
       };
-      setContacts(prevState => [...prevState, contact]);
+      dispatch(addContactAction(contact));
+      // setContacts(prevState => [...prevState, contact]);
     }
   };
 
-  const getFilteredContacts = () => {
-    const normalizedFilter = filter.toLowerCase();
+  // const getFilteredContacts = () => {
+  //   const normalizedFilter = filter.toLowerCase();
 
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalizedFilter)
-    );
-  };
+  //   return contacts.filter(contact =>
+  //     contact.name.toLowerCase().includes(normalizedFilter)
+  //   );
+  // };
 
   const changeFilter = filter => {
-    setFilter(filter);
+
+
+  dispatch(filterChange(filter))
   };
 
   const removeContact = contactId => {
-    setContacts(prevState => [
-      ...prevState.filter(contact => contact.id !== contactId),
-    ]);
+    dispatch(deleteContactAction(contactId));
+
   };
 
   return (
@@ -55,9 +65,9 @@ export const App = () => {
         <ContactForm addContact={addContact} />
 
         <h2>Contacts:</h2>
-        <Filter value={filter} onChangeFilter={changeFilter} />
+        <Filter  onChangeFilter={changeFilter} />
         <ContactList
-          contacts={getFilteredContacts()}
+          // contacts={getFilteredContacts()}
           onRemoveContact={removeContact}
         />
       </div>

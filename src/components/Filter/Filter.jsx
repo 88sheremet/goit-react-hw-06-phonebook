@@ -1,6 +1,9 @@
 import Proptypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
-export const Filter = ({ value, onChangeFilter }) => {
+export const Filter = ({  onChangeFilter }) => {
+
+  const filter = useSelector(state => state.filter)
   return (
     <>
       <label>
@@ -11,7 +14,7 @@ export const Filter = ({ value, onChangeFilter }) => {
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
-          value={value}
+          value={filter}
           onChange={e => onChangeFilter(e.target.value)}
         />
       </label>
@@ -20,6 +23,6 @@ export const Filter = ({ value, onChangeFilter }) => {
 };
 
 Filter.propTypes = {
-  value: Proptypes.string,
+  // value: Proptypes.string,
   onChangeFilter: Proptypes.func.isRequired,
 };
