@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import css from '../ContactList/ContactList.module.css';
 
 export const ContactList = ({ onRemoveContact }) => {
+  
   const contactsArr = useSelector(state => {
     return state.contacts.contacts.filter(contact =>
       contact.name.toLowerCase().includes(state.filter.toLowerCase())
@@ -31,6 +32,5 @@ export const ContactList = ({ onRemoveContact }) => {
 };
 
 ContactList.propTypes = {
-  // contacts: PropTypes.array.isRequired,
   onRemoveContact: PropTypes.func.isRequired,
 };

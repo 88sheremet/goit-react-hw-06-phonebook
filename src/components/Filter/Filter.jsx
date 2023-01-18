@@ -1,9 +1,8 @@
 import Proptypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-export const Filter = ({  onChangeFilter }) => {
-
-  const filter = useSelector(state => state.filter)
+export const Filter = ({ onChangeFilter }) => {
+  const filter = useSelector(state => state.filter);
   return (
     <>
       <label>
@@ -23,6 +22,5 @@ export const Filter = ({  onChangeFilter }) => {
 };
 
 Filter.propTypes = {
-  // value: Proptypes.string,
   onChangeFilter: Proptypes.func.isRequired,
 };
