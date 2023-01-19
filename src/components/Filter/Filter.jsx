@@ -1,26 +1,25 @@
-import Proptypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { filterChange } from 'redux/filterSlice';
 
-export const Filter = ({ onChangeFilter }) => {
-  const filter = useSelector(state => state.filter);
+export const Filter = () => {
+  const filter = useSelector(state => state.filter.filter);
+  const dispatch = useDispatch();
+
+  const onChangeFilter = e => {
+    dispatch(filterChange(e.target.value));
+  };
+
   return (
     <>
       <label>
         Find contacts by name
         <input
-          type="tel"
-          name="number"
-          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-          required
+          type="text"
+          name="filter"
           value={filter}
-          onChange={e => onChangeFilter(e.target.value)}
+          onChange={onChangeFilter}
         />
       </label>
     </>
   );
-};
-
-Filter.propTypes = {
-  onChangeFilter: Proptypes.func.isRequired,
 };
